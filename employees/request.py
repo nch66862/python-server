@@ -55,5 +55,4 @@ def get_single_employee(id):
         # instead of the dot notation that JavaScript used.
         if employee["id"] == id:
             requested_employee = employee
-
-    return requested_employee
+            return requested_employee

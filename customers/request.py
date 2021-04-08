@@ -54,5 +54,4 @@ def get_single_customer(id):
         # instead of the dot notation that JavaScript used.
         if customer["id"] == id:
             requested_customer = customer
-
-    return requested_customer
+            return requested_customer

@@ -62,38 +62,40 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "animals":
             if id is not None:
-                response = f"{get_single_animal(id)}"
+                response = get_single_animal(id)
             else:
-                response = f"{get_all_animals()}"
+                response = get_all_animals()
 
         elif resource == "customers":
             if id is not None:
-                response = f"{get_single_customer(id)}"
+                response = get_single_customer(id)
             else:
-                response = f"{get_all_customers()}"
+                response = get_all_customers()
 
         elif resource == "employees":
             if id is not None:
-                response = f"{get_single_employee(id)}"
+                response = get_single_employee(id)
             else:
-                response = f"{get_all_employees()}"
+                response = get_all_employees()
 
         elif resource == "locations":
             if id is not None:
-                response = f"{get_single_location(id)}"
+                response = get_single_location(id)
             else:
-                response = f"{get_all_locations()}"
+                response = get_all_locations()
 
         else:
             response = "[]"
 
-        self.wfile.write(response.encode())
+        self.wfile.write(json.dumps(response).encode())
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
     def do_POST(self):
         self._set_headers(201)
+        #reads up to the end of the characters
         content_len = int(self.headers.get('content-length', 0))
+        #turns that string into a python dictionary
         post_body = self.rfile.read(content_len)
 
         # Convert JSON string to a Python dictionary
@@ -118,7 +120,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_creation = create_location(post_body)
 
         # Encode the new animal and send in response
-        self.wfile.write(f"{new_creation}".encode())
+        self.wfile.write(json.dumps(new_creation).encode())
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any PUT request.

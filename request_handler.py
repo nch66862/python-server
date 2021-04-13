@@ -87,7 +87,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         else:
             response = "[]"
 
-        self.wfile.write(json.dumps(response).encode())
+        self.wfile.write(response.encode())
 
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.

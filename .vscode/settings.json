@@ -1,3 +1,12 @@
 {
-    "python.pythonPath": "/Users/nickcarver/.local/share/virtualenvs/python-server-sCLGVDTF/bin/python"
+    "python.pythonPath": "/Users/nickcarver/.local/share/virtualenvs/python-server-sCLGVDTF/bin/python",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Python Kennels",
+            "database": "${workspaceFolder:python-server}/kennel.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
 }

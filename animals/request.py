@@ -74,22 +74,6 @@ def get_single_animal(id):
 
         return json.dumps(animal.__dict__)
 
-def create_animal(animal):
-    # Get the id value of the last animal in the list
-    max_id = ANIMALS[-1]["id"]
-
-    # Add 1 to whatever that number is
-    new_id = max_id + 1
-
-    # Add an `id` property to the animal dictionary
-    animal["id"] = new_id
-
-    # Add the animal dictionary to the list
-    ANIMALS.append(animal)
-
-    # Return the dictionary with `id` property added
-    return animal
-
 def delete_animal(id):
     with sqlite3.connect("./kennel.db") as conn:
         db_cursor = conn.cursor()
@@ -100,13 +84,32 @@ def delete_animal(id):
         """, (id, ))
 
 def update_animal(id, new_animal):
-    # Iterate the ANIMALS list, but use enumerate() so that
-    # you can access the index value of each item.
-    for index, animal in enumerate(ANIMALS):
-        if animal["id"] == id:
-            # Found the animal. Update the value.
-            ANIMALS[index] = new_animal
-            break
+    with sqlite3.connect("./kennel.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Animal
+            SET
+                name = ?,
+                breed = ?,
+                status = ?,
+                location_id = ?,
+                customer_id = ?
+        WHERE id = ?
+        """, (new_animal['name'], new_animal['breed'],
+              new_animal['status'], new_animal['location_id'],
+              new_animal['customer_id'], id, ))
+
+        # Were any rows affected?
+        # Did the client send an `id` that exists?
+        rows_affected = db_cursor.rowcount
+
+    if rows_affected == 0:
+        # Forces 404 response by main module
+        return False
+    else:
+        # Forces 204 response by main module
+        return True
 
 def get_animals_by_location(locationId):
 
